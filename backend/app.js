@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const cors = require('cors');
@@ -5,9 +6,14 @@ const mongoose = require('mongoose');
 app.use(cors());
 app.use(express.json());
 
-const Cliente = require('./models/cliente');
 
-mongoose.connect('mongodb+srv://userteste:usjt123456@cluster0.ypv1p.mongodb.net/myFirstDatabase?retryWrites=true&w=majority')
+const Cliente = require('./models/cliente');
+const user_db = process.env.MONGODB_USER;
+const pass_db = process.env.MONGODB_PASSWORD;
+const cluster_db = process.env.MONGODB_CLUSTER;
+const name_db = process.env.MONGODB_DATABASE;
+
+mongoose.connect(`mongodb+srv://${user_db}:${pass_db}@${cluster_db}.ssm0w.mongodb.net/${name_db}?retryWrites=true&w=majority`)
 .then(() => {
   console.log("Conexão OK");
 }).catch(() => {
@@ -43,9 +49,13 @@ app.post('/api/clientes', (req, res, next) => {
     fone: req.body.fone,
     email: req.body.email
   })
-  cliente.save();
-  console.log(cliente);
-  res.status(201).json({mensagem: 'Cliente inserido'});
+  cliente.save().then((clienteInserido) => {
+    console.log(cliente);
+    res.status(201).json({
+      mensagem: 'Cliente inserido',
+      id: clienteInserido._id
+    });
+  });
 });
 
 app.get('/api/clientes', (req, res, next) => {
@@ -59,8 +69,12 @@ app.get('/api/clientes', (req, res, next) => {
 });
 
 app.delete('/api/clientes/:id', (req, res, next) => {
-  console.log(req.params);
-  res.status(200).end();
+  Cliente.deleteOne({_id: req.params.id}).then(resultado => {
+    console.log(resultado);
+    res.status(200).json({
+      mensagem: "Cliente removido"
+    })
+  })
 })
 
 app.use('/api/clientes', (req, res, next) => {
