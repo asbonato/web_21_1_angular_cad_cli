@@ -7,7 +7,7 @@ app.use(express.json());
 
 const Cliente = require('./models/cliente');
 
-mongoose.connect('mongodb+srv://seu_usuario:sua_senha@seu_cluster/seu_banco?retryWrites=true&w=majority')
+mongoose.connect('mongodb+srv://userteste:usjt123456@cluster0.ypv1p.mongodb.net/myFirstDatabase?retryWrites=true&w=majority')
 .then(() => {
   console.log("Conexão OK");
 }).catch(() => {
