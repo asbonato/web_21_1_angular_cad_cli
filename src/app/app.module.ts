@@ -14,7 +14,7 @@ import { ClienteListaComponent } from './clientes/cliente-lista/cliente-lista.co
 import { MatExpansionModule } from '@angular/material/expansion';
 import { ClienteService } from './clientes/cliente.service';
 import { HttpClientModule } from '@angular/common/http';
-
+import { MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
@@ -34,7 +34,8 @@ import { AppRoutingModule } from './app-routing.module';
     MatButtonModule,
     MatToolbarModule,
     MatExpansionModule,
-    HttpClientModule
+    HttpClientModule,
+    MatProgressSpinnerModule
   ],
   providers: [ClienteService],
   bootstrap: [AppComponent]

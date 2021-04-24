@@ -1,5 +1,6 @@
 <mat-card>
-  <form (submit)="onAdicionarCliente(clienteForm)" #clienteForm="ngForm">
+  <mat-spinner *ngIf="estaCarregando"></mat-spinner>
+  <form (submit)="onSalvarCliente(clienteForm)" *ngIf="!estaCarregando" #clienteForm="ngForm">
     <mat-form-field>
       <input required minlength="4" type="text"  matInput placeholder="nome" name="nome" [ngModel]="cliente?.nome"
         #nome="ngModel"/>
@@ -7,21 +8,21 @@
     </mat-form-field>
 
     <mat-form-field>
-      <input required type="text"  matInput placeholder="fone"  name="fone" 
-      [ngModel]="cliente?.fone" 
+      <input required type="text"  matInput placeholder="fone"  name="fone"
+      [ngModel]="cliente?.fone"
         #fone="ngModel"/>
         <mat-error *ngIf="fone.invalid">Digite um telefone válido</mat-error>
     </mat-form-field>
 
     <mat-form-field>
-      <input required type="text"  matInput placeholder="email" name="email" 
+      <input required type="text"  matInput placeholder="email" name="email"
       [ngModel]="cliente?.email"
         #email="ngModel"/>
         <mat-error *ngIf="email.invalid">Digite um email válido</mat-error>
     </mat-form-field>
 
     <button color="accent" mat-raised-button>
-      Inserir Cliente
+      Salvar Cliente
     </button>
   </form>
 </mat-card>
