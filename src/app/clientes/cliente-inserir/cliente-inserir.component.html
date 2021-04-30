@@ -1,24 +1,55 @@
 <mat-card>
   <mat-spinner *ngIf="estaCarregando"></mat-spinner>
-  <form (submit)="onSalvarCliente(clienteForm)" *ngIf="!estaCarregando" #clienteForm="ngForm">
+  <form [formGroup]="form" (submit)="onSalvarCliente()" *ngIf="!estaCarregando">
+    
     <mat-form-field>
-      <input required minlength="4" type="text"  matInput placeholder="nome" name="nome" [ngModel]="cliente?.nome"
-        #nome="ngModel"/>
-        <mat-error *ngIf="nome.invalid">Digite um nome válido</mat-error>
+      <input 
+        required 
+        minlength="4" 
+        type="text"  
+        matInput
+        formControlName="nome" 
+        placeholder="nome" 
+        name="nome" 
+      />
+        <mat-error *ngIf="form.get('nome').invalid"> Digite um nome válido</mat-error>
+    </mat-form-field>
+
+    <div>
+      <button mat-stroked-button type="button" (click)="selecionaArquivo.click()">Selecionar Imagem</button>
+      <input type="file" (change)="onImagemSelecionada($event)" #selecionaArquivo>
+    </div>
+
+    <div class="imagem-preview">
+      <img 
+        [src]="previewImagem" 
+        [alt]="form.value.nome" 
+        *ngIf="previewImagem && previewImagem !=='' && form.get('imagem').valid"
+      >
+    </div>
+
+    <mat-form-field>
+      <input 
+        required 
+        type="text"  
+        matInput
+        formControlName="fone" 
+        placeholder="fone"  
+        name="fone"
+      />
+        <mat-error *ngIf="form.get('fone').invalid">Digite um telefone válido</mat-error>
     </mat-form-field>
 
     <mat-form-field>
-      <input required type="text"  matInput placeholder="fone"  name="fone"
-      [ngModel]="cliente?.fone"
-        #fone="ngModel"/>
-        <mat-error *ngIf="fone.invalid">Digite um telefone válido</mat-error>
-    </mat-form-field>
-
-    <mat-form-field>
-      <input required type="text"  matInput placeholder="email" name="email"
-      [ngModel]="cliente?.email"
-        #email="ngModel"/>
-        <mat-error *ngIf="email.invalid">Digite um email válido</mat-error>
+      <input 
+        required 
+        type="text"  
+        matInput 
+        formControlName="email"
+        placeholder="email" 
+        name="email"
+      />
+        <mat-error *ngIf="form.get('email').invalid">Digite um email válido</mat-error>
     </mat-form-field>
 
     <button color="accent" mat-raised-button>
