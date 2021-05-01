@@ -4,7 +4,6 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 import { ClienteService } from '../cliente.service';
 import { Cliente } from '../cliente.model';
 import { mimeTypeValidator } from './mime-type.validator';
-import { ThrowStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-cliente-inserir',
@@ -17,8 +16,8 @@ export class ClienteInserirComponent implements OnInit {
   private idCliente: any;
   public cliente: any;
   public estaCarregando: boolean = false;
-  form: FormGroup | any;
-  previewImagem: string | any;
+  form: FormGroup;
+  previewImagem: string;
 
   constructor(
     public clienteService: ClienteService,
@@ -26,6 +25,7 @@ export class ClienteInserirComponent implements OnInit {
   ) {
 
   }
+
   ngOnInit(){
     this.form = new FormGroup({
       nome: new FormControl(null, {
@@ -71,6 +71,16 @@ export class ClienteInserirComponent implements OnInit {
     })
   }
 
+  onImagemSelecionada(event: Event){
+    const arquivo = (event.target as HTMLInputElement).files[0];
+    this.form.patchValue({'imagem': arquivo});
+    this.form.get('imagem').updateValueAndValidity();
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.previewImagem = reader.result as string;
+    }
+    reader.readAsDataURL(arquivo);
+  }
 
   onSalvarCliente() {
     if (this.form.invalid) {
@@ -96,16 +106,5 @@ export class ClienteInserirComponent implements OnInit {
     }
     //this.estaCarregando = false;
     this.form.reset();
-  }
-
-  onImagemSelecionada(event: Event){
-    const arquivo = (event.target as HTMLInputElement).files![0];
-    this.form.patchValue({'imagem':arquivo});
-    this.form.get('imagem').updateValueAndValidity();
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.previewImagem = reader.result as string;
-    }
-    reader.readAsDataURL(arquivo);
   }
 }
