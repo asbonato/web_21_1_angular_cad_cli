@@ -1,4 +1,5 @@
 require('dotenv').config();
+const path = require('path');
 const express = require('express');
 const app = express();
 const cors = require('cors');
@@ -6,6 +7,7 @@ const mongoose = require('mongoose');
 const clienteRoutes = require('./rotas/clientes');
 app.use(cors());
 app.use(express.json());
+app.use('/imagens', express.static(path.join("backend/imagens")));
 
 
 const Cliente = require('./models/cliente');

@@ -4,6 +4,7 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 import { ClienteService } from '../cliente.service';
 import { Cliente } from '../cliente.model';
 import { mimeTypeValidator } from './mime-type.validator';
+import { ThrowStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-cliente-inserir',
@@ -52,12 +53,14 @@ export class ClienteInserirComponent implements OnInit {
             id: dadosCli._id,
             nome: dadosCli.nome,
             fone: dadosCli.fone,
-            email: dadosCli.email
+            email: dadosCli.email,
+            imagemURL: dadosCli.imagemURL
           };
           this.form.setValue({
             nome: this.cliente.nome,
             fone: this.cliente.fone,
-            email:this.cliente.email
+            email:this.cliente.email,
+            imagem: this.cliente.imagemURL
           })
         });
       }
@@ -79,14 +82,16 @@ export class ClienteInserirComponent implements OnInit {
         this.form.value.id,
         this.form.value.nome,
         this.form.value.fone,
-        this.form.value.email
+        this.form.value.email,
+        this.form.value.imagem
       );
     } else {
       this.clienteService.atualizarCliente(
         this.idCliente,
         this.form.value.nome,
         this.form.value.fone,
-        this.form.value.email
+        this.form.value.email,
+        this.form.value.imagem
       )
     }
     //this.estaCarregando = false;

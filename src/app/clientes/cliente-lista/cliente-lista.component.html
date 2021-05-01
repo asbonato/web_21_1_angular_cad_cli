@@ -2,6 +2,9 @@
 <mat-accordion *ngIf="clientes.length > 0 && !estaCarregando">
   <mat-expansion-panel *ngFor="let cliente of clientes">
     <mat-expansion-panel-header>{{cliente.nome}}</mat-expansion-panel-header>
+    <div class="cliente-imagem">
+      <img [src]="cliente.imagemURL" [alt]="cliente.nome">
+    </div>
     <p>Fone: {{cliente.fone}}</p>
     <p>Email: {{cliente.email}}</p>
     <mat-action-row>
