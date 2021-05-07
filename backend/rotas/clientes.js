@@ -48,13 +48,27 @@ router.post('', multer({storage: armazenamento}).single('imagem'), (req, res, ne
 });
 
 router.get('', (req, res, next) => {
-  Cliente.find().then(documents => {
-    console.log(documents);
-    res.status(200).json({
-      mensagem: "Tudo OK",
-      clientes: documents
-    });
+  const pageSize = +req.query.pageSize;
+  const page = +req.query.page;
+  const consulta = Cliente.find();
+  let clientesEncontrados;
+  if (pageSize && page){
+    consulta.
+    skip(pageSize * (page - 1)).
+    limit(pageSize);
+
+  }
+  consulta.then (documents => {
+    clientesEncontrados = documents
+    return Cliente.count()
   })
+  .then((count) => {
+    res.status(200).json({
+      mensagem: "OK",
+      maxClientes: count,
+      clientes: clientesEncontrados
+    })
+  })  
 });
 
 router.get('/:id', (req, res, next) => {

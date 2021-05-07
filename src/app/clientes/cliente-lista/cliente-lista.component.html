@@ -13,6 +13,14 @@
     </mat-action-row>
   </mat-expansion-panel>
 </mat-accordion>
+<mat-paginator
+  *ngIf="clientes.length > 0"
+  [length]="totalDeClientes" 
+  [pageSize]="totalDeClientesPorPagina"
+  [pageSizeOptions]="opcoesTotalDeClientesPorPagina"
+  (page)="onPaginaAlterada($event)"
+>
+</mat-paginator>
 <p class="mat-body-1" style="text-align: center;" *ngIf="clientes.length <= 0 && !estaCarregando">
   Nenhum Cliente Cadastrado
 </p>
