@@ -8,6 +8,7 @@ const MIME_TYPE_EXTENSAO_MAPA = {
   'image/jpg': 'jpg',
   'image/bmp': 'bmp'
 }
+const checkAuth = require('../middleware/check-auth');
 
 const armazenamento = multer.diskStorage({
   //requisicao, arquivo extraido e uma função a ser
@@ -24,7 +25,7 @@ const armazenamento = multer.diskStorage({
   },
 })
 
-router.post('', multer({storage: armazenamento}).single('imagem'), (req, res, next) => {
+router.post('', checkAuth, multer({storage: armazenamento}).single('imagem'), (req, res, next) => {
   const imagemURL = `${req.protocol}://${req.get('host')}`
   const cliente = new Cliente({
     nome: req.body.nome,
@@ -68,7 +69,7 @@ router.get('', (req, res, next) => {
       maxClientes: count,
       clientes: clientesEncontrados
     })
-  })  
+  })
 });
 
 router.get('/:id', (req, res, next) => {
@@ -81,7 +82,7 @@ router.get('/:id', (req, res, next) => {
   });
 });
 
-router.delete('/:id', (req, res, next) => {
+router.delete('/:id', checkAuth, (req, res, next) => {
   Cliente.deleteOne({_id: req.params.id}).then(resultado => {
     console.log(resultado);
     res.status(200).json({
@@ -90,7 +91,7 @@ router.delete('/:id', (req, res, next) => {
   })
 })
 
-router.put('/:id', multer({storage: armazenamento}).single('imagem'), (req, res, next) => {
+router.put('/:id', checkAuth, multer({storage: armazenamento}).single('imagem'), (req, res, next) => {
   console.log(req.file);
   let imagemURL = req.body.imagemURL; //tentamos pegar a URL já existente
   if(req.file) { //mas se for um arquivo, montamos uma nova
