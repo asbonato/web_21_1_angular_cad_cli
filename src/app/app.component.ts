@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { UsuarioService } from './auth/usuario.service';
 import { Cliente } from './clientes/cliente.model';
 
 @Component({
@@ -6,12 +7,16 @@ import { Cliente } from './clientes/cliente.model';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
-  title = 'cadcli01';
-  clientes: Cliente[] = [];
+export class AppComponent implements OnInit{
 
-  onClienteAdicionado(cliente: Cliente) {
-    this.clientes = [...this.clientes, cliente];
-    console.log(this.clientes);
+  constructor (
+    private usuarioService: UsuarioService
+  ){
+
   }
+
+  ngOnInit(): void{
+    this.usuarioService.autenticarAutomaticamente();
+  }
+
 }

@@ -2,8 +2,9 @@
   <span><a routerLink= '/'>Clientes</a></span>
   <span class="separador"></span>
   <ul>
-    <li><a mat-button routerLink="/criar" routerLinkActive="mat-accent">Novo Cliente</a></li>
-    <li><a mat-button routerLink="/login" routerLinkActive="mat-accent">Login</a></li>
-    <li><a mat-button routerLink="/signup" routerLinkActive="mat-accent">Cadastrar</a></li>
+    <li><a mat-button *ngIf="autenticado"routerLink="/criar" routerLinkActive="mat-accent">Novo Cliente</a></li>
+    <li><a mat-button *ngIf="!autenticado" routerLink="/login" routerLinkActive="mat-accent">Login</a></li>
+    <li><a mat-button *ngIf="!autenticado" routerLink="/signup" routerLinkActive="mat-accent">Cadastrar</a></li>
+    <li><button *ngIf="autenticado" mat-button (click)="onLogout()">Logout</button></li>
   </ul>
 </mat-toolbar>
