@@ -31,7 +31,8 @@ router.post('', checkAuth, multer({storage: armazenamento}).single('imagem'), (r
     nome: req.body.nome,
     fone: req.body.fone,
     email: req.body.email,
-    imagemURL: `${imagemURL}/imagens/${req.file.filename}`
+    imagemURL: `${imagemURL}/imagens/${req.file.filename}`,
+    criador: req.dadosUsuario.idUsuario
   })
   cliente.save().then((clienteInserido) => {
     res.status(201).json({
@@ -83,13 +84,14 @@ router.get('/:id', (req, res, next) => {
 });
 
 router.delete('/:id', checkAuth, (req, res, next) => {
-  Cliente.deleteOne({_id: req.params.id}).then(resultado => {
-    console.log(resultado);
-    res.status(200).json({
-      mensagem: "Cliente removido"
-    })
-  })
-})
+  Cliente.deleteOne({_id: req.params.id, criador: req.dadosUsuario.idUsuario}).then(resultado => {
+    if (resultado.n > 0){
+      res.status(200).json({mensagem: "Cliente removido"});
+    } else {
+      res.status(401).json({mensagem: "Remoção não permitida"});
+    }
+  });
+});
 
 router.put('/:id', checkAuth, multer({storage: armazenamento}).single('imagem'), (req, res, next) => {
   console.log(req.file);
@@ -103,15 +105,21 @@ router.put('/:id', checkAuth, multer({storage: armazenamento}).single('imagem'),
     nome: req.body.nome,
     fone: req.body.fone,
     email: req.body.email,
-    imagemURL: imagemURL
+    imagemURL: imagemURL,
+    criador: req.dadosUsuario.idUsuario
   });
-  Cliente.updateOne({_id: req.params.id}, cliente)
+  Cliente.updateOne({_id: req.params.id, criador:req.dadosUsuario.idUsuario}, cliente)
   .then((resultado) => {
-    console.log(resultado);
+    //console.log(resultado);
+    if(resultado.nModified > 0){
+      res.status(200).json({mensagem: 'Atualização realizada com sucesso'});
+    } else {
+      res.status(401).json({mensagem: 'Atualização não permitida'});
+    }
   }).catch((err) => {
     console.log(err);
   });
-  res.status(200).json({mensagem: 'Atualização realizada com sucesso'});
+
 })
 
 module.exports =router;

@@ -22,6 +22,7 @@ export class ClienteListaComponent implements OnInit, OnDestroy {
   paginaAtual: number = 1;
   public autenticado: boolean = false;
   private authObserver: Subscription;
+  public idUsuario: string;
 
 
   constructor(
@@ -39,6 +40,7 @@ export class ClienteListaComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.estaCarregando = true;
     this.clienteService.getClientes(this.totalDeClientesPorPagina, this.paginaAtual);
+    this.idUsuario = this.usuarioService.getIdUsuario();
     this.clientesSubscription = this.clienteService
       .getListaDeClientesAtualizadaObservable()
       .subscribe((dados: {clientes: [], maxClientes: number}) => {

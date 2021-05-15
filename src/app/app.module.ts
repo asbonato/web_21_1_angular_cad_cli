@@ -23,6 +23,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { AuthInterceptor } from './auth/auth-interceptor';
+import { ErroInterceptor } from './erro-interceptor';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ErroComponent } from './erro/erro.component';
+
 
 @NgModule({
   declarations: [
@@ -31,7 +35,8 @@ import { AuthInterceptor } from './auth/auth-interceptor';
     CabecalhoComponent,
     ClienteListaComponent,
     LoginComponent,
-    SignupComponent
+    SignupComponent,
+    ErroComponent
   ],
   imports: [
     AppRoutingModule,
@@ -46,9 +51,13 @@ import { AuthInterceptor } from './auth/auth-interceptor';
     MatExpansionModule,
     MatPaginatorModule,
     HttpClientModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatDialogModule,
   ],
-  providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: ErroInterceptor, multi: true},
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -6,7 +6,14 @@ module.exports = (req, res, next) => {
   //a palavra Bearer e a segunda contém o token desejado
   try {
     const token = req.headers.authorization.split(" ")[1];
-    jwt.verify(token, "minhasenha");
+    const tokenDecodificado = jwt.verify(token, "minhasenha");
+    //as propriedades que acessamos de tokenDecodificado são aquelas que codificamos ao
+    //chamar o método sign, no endpoint de login
+    req.dadosUsuario = {
+      email: tokenDecodificado.email,
+      idUsuario: tokenDecodificado.id
+    }
+    //jwt.verify(token, "minhasenha");
     next()
   }
   //se não existir o header authorization, tratamos o erro

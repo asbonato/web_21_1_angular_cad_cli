@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
+
 @Injectable({ providedIn: 'root'})
 export class ClienteService {
   private clientes: Cliente[] = [];
@@ -25,7 +26,8 @@ export class ClienteService {
                 nome: cliente.nome,
                 fone: cliente.fone,
                 email: cliente.email,
-                imagemURL: cliente.imagemURL
+                imagemURL: cliente.imagemURL,
+                criador: cliente.criador
               }
             }),
             maxClientes: dados.maxClientes
@@ -33,6 +35,7 @@ export class ClienteService {
         }))
         .subscribe(
           (dados) => {
+            console.log(dados.clientes);
             this.clientes = dados.clientes;
             this.listaClientesAtualizada.next({clientes: [...this.clientes], maxClientes: dados.maxClientes});
           }
@@ -69,7 +72,7 @@ export class ClienteService {
   }
   getCliente (idCliente: any){
     //return{...this.clientes.find((cli) => cli.id === idCliente)}
-    return this.httpClient.get<{_id: string, nome: string, fone: string, email:string, imagemURL:string}>
+    return this.httpClient.get<{_id: string, nome: string, fone: string, email:string, imagemURL:string, criador: string}>
     (`http://localhost:3000/api/clientes/${idCliente}`);
   }
 
@@ -90,7 +93,8 @@ export class ClienteService {
         nome: nome,
         fone: fone,
         email: email,
-        imagemURL: imagem
+        imagemURL: imagem,
+        criador: null
       }
     }
     console.log(typeof(clienteData));

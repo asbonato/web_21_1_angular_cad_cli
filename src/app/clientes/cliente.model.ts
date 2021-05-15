@@ -4,4 +4,5 @@ export interface Cliente{
   fone: string;
   email: string;
   imagemURL: string;
+  criador: string;
 }
