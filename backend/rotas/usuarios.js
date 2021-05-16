@@ -59,6 +59,10 @@ router.post('/signup', (req, res, next) => {
         mensagem: "Ok",
         resultado: result
       })
+    }).catch((err) => {
+      res.status(500).json({
+        mensagem: "Erro com as credenciais"
+      })
     })
   })
   .catch((erro) => {
